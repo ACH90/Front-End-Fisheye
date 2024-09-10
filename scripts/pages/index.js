@@ -3,12 +3,9 @@ async function getPhotographers() {
   // requête sur le fichier JSON en utilisant "fetch".
 
   const response = await fetch("../data/photographers.json");
-  const data = await response.json();
-
-  console.log(data);
 
   // et bien retourner le tableau photographers seulement une fois récupéré
-  return data;
+  return await response.json();
 }
 
 async function displayData(photographers) {
