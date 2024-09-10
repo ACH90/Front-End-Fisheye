@@ -29,6 +29,7 @@ h1 {
     grid-template-columns: 1fr 1fr 1fr;
     gap: 70px;
     margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .photographer_section article {
@@ -47,4 +48,28 @@ h1 {
 .photographer_section article img {
     height: 200px;
     width: 200px;
+    border-radius: 50%;
+    object-fit:cover;
+}
+
+.photographer-location {
+    font-size: 13px;
+    text-align: center;
+    margin: 0px;
+    color:#901C1C;
+    ;
+}
+
+.photographer-tagline {
+    font-size: 10px;
+    text-align: center;
+    margin: 0px;
+}
+
+.photographer-price {
+    font-size: 9px;
+    text-align: center;
+    margin: 0px;
+    color: #757575;
+    ;
 }
