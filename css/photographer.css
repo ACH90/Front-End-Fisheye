@@ -75,7 +75,35 @@ form input {
     border-radius: 5px;
 }
 
+.photograph-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 300px;
+    margin: 0 100px;
+}
+
+.photographer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* height: 300px; */
+}
+
+.photographer-info h1 { 
+    font-size: 36px;
+    margin-right: auto;
+}
+
 .photograph-header img {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    object-fit:cover;
+}
+
+.photographer-works img {
     height: 200px;
     width: 200px;
     border-radius: 50%;

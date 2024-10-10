@@ -30,7 +30,13 @@ async function getMediaByPhotographerId(id) {
 function displayPhotographerData(photographer, media) {
   if (!photographer) return;
 
+  // Création du header
   const photographerHeader = document.querySelector(".photograph-header");
+
+  // Création div Photographer info
+  const photographerInfo = document.createElement("div");
+  photographerInfo.classList.add("photographer-info");
+  photographerHeader.appendChild(photographerInfo);
 
   // Trouver le bouton "Contactez-moi" dans le HTML
   const contactButton = photographerHeader.querySelector(".contact_button");
@@ -52,10 +58,13 @@ function displayPhotographerData(photographer, media) {
   price.classList.add("photographer-price");
 
   // Ajouter les éléments avant le bouton "Contactez-moi"
-  photographerHeader.insertBefore(h1, contactButton);
-  photographerHeader.insertBefore(location, contactButton);
-  photographerHeader.insertBefore(tagline, contactButton);
-  photographerHeader.insertBefore(price, contactButton);
+  photographerInfo.appendChild(h1, contactButton);
+  photographerInfo.appendChild(location, contactButton);
+  photographerInfo.appendChild(tagline, contactButton);
+  photographerInfo.appendChild(price, contactButton);
+
+  // Ajouter photographerInfo avant bouton "Contactez-moi"
+  photographerHeader.insertBefore(photographerInfo, contactButton);
 
   // Ajouter la photo après le bouton "Contactez-moi"
   const img = document.createElement("img");
@@ -64,9 +73,8 @@ function displayPhotographerData(photographer, media) {
 
   photographerHeader.appendChild(img);
 
-  // Créer une section pour les œuvres
-  const mediaSection = document.createElement("section");
-  mediaSection.classList.add("photographer-media");
+  // Création section pour les œuvres
+  const photographerWorks = document.querySelector(".photographer-works");
 
   // Ajouter chaque œuvre dans la section
   media.forEach((item) => {
@@ -87,11 +95,11 @@ function displayPhotographerData(photographer, media) {
     mediaElement.appendChild(mediaTitle);
     mediaElement.appendChild(mediaLikes);
 
-    mediaSection.appendChild(mediaElement);
+    photographerWorks.appendChild(mediaElement);
   });
 
   // Ajouter la section des œuvres après la photo du photographe
-  photographerHeader.appendChild(mediaSection);
+  // photographerHeader.appendChild(mediaSection);
 }
 
 // Extraire l'ID du photographe depuis l'URL
