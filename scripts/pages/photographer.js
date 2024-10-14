@@ -72,34 +72,66 @@ function displayPhotographerData(photographer, media) {
   img.setAttribute("alt", photographer.name);
 
   photographerHeader.appendChild(img);
+}
 
-  // Création section pour les œuvres
-  const photographerWorks = document.querySelector(".photographer-works");
+function getMediaType(mediaItem) {
+  if (mediaItem.image && mediaItem.image.endsWith(".jpg")) {
+    return "image";
+  } else if (mediaItem.video && mediaItem.video.endsWith(".mp4")) {
+    return "video";
+  }
+  return null;
+}
 
-  // Ajouter chaque œuvre dans la section
+function mediaFactory(mediaItem) {
+  const mediaElement = document.createElement("div");
+  mediaElement.classList.add("media-item");
+
+  let mediaContent;
+
+  // Utiliser la fonction getMediaType pour vérifier le type
+  const mediaType = getMediaType(mediaItem);
+
+  if (mediaType === "image") {
+    mediaContent = document.createElement("img");
+    mediaContent.setAttribute("src", `assets/media/${mediaItem.image}`);
+    mediaContent.setAttribute("alt", mediaItem.title);
+  } else if (mediaType === "video") {
+    mediaContent = document.createElement("video");
+    mediaContent.setAttribute("controls", true);
+    const source = document.createElement("source");
+    source.setAttribute("src", `assets/media/${mediaItem.video}`);
+    source.setAttribute("type", "video/mp4");
+    mediaContent.appendChild(source);
+  }
+
+  const mediaTitle = document.createElement("p");
+  mediaTitle.textContent = mediaItem.title;
+
+  const mediaLikes = document.createElement("p");
+  mediaLikes.textContent = `${mediaItem.likes} Likes`;
+
+  mediaElement.appendChild(mediaContent);
+  mediaElement.appendChild(mediaTitle);
+  mediaElement.appendChild(mediaLikes);
+
+  return mediaElement;
+}
+
+function displayPhotographerMedia(media) {
+  // Créer une section pour les œuvres du photographe
+  const mediaSection = document.createElement("section");
+  mediaSection.classList.add("photographer-media");
+
+  // Pour chaque œuvre, utiliser la factory pour créer et ajouter les éléments
   media.forEach((item) => {
-    const mediaElement = document.createElement("div");
-    mediaElement.classList.add("media-item");
-
-    const mediaImg = document.createElement("img");
-    mediaImg.setAttribute("src", `assets/media/${item.image}`);
-    mediaImg.setAttribute("alt", item.title);
-
-    const mediaTitle = document.createElement("p");
-    mediaTitle.textContent = item.title;
-
-    const mediaLikes = document.createElement("p");
-    mediaLikes.textContent = `${item.likes} Likes`;
-
-    mediaElement.appendChild(mediaImg);
-    mediaElement.appendChild(mediaTitle);
-    mediaElement.appendChild(mediaLikes);
-
-    photographerWorks.appendChild(mediaElement);
+    const mediaElement = mediaFactory(item);
+    mediaSection.appendChild(mediaElement);
   });
 
-  // Ajouter la section des œuvres après la photo du photographe
-  // photographerHeader.appendChild(mediaSection);
+  // Ajouter la section des œuvres au DOM (dans le main ou ailleurs)
+  const main = document.querySelector("#main");
+  main.appendChild(mediaSection);
 }
 
 // Extraire l'ID du photographe depuis l'URL
@@ -111,5 +143,6 @@ Promise.all([
   getPhotographerById(photographerId),
   getMediaByPhotographerId(photographerId),
 ]).then(([photographer, media]) => {
-  displayPhotographerData(photographer, media);
+  displayPhotographerData(photographer); // Affiche les infos du photographe
+  displayPhotographerMedia(media); // Affiche les œuvres du photographe
 });
