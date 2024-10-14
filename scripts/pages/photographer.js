@@ -74,6 +74,7 @@ function displayPhotographerData(photographer, media) {
   photographerHeader.appendChild(img);
 }
 
+// Creer une fonction pour extraire le type de media
 function getMediaType(mediaItem) {
   if (mediaItem.image && mediaItem.image.endsWith(".jpg")) {
     return "image";
@@ -84,6 +85,7 @@ function getMediaType(mediaItem) {
 }
 
 function mediaFactory(mediaItem) {
+  // Creer l'element media-item
   const mediaElement = document.createElement("div");
   mediaElement.classList.add("media-item");
 
@@ -105,23 +107,41 @@ function mediaFactory(mediaItem) {
     mediaContent.appendChild(source);
   }
 
+  // Ajouter le mediaContent à la mediaElement
+  mediaElement.appendChild(mediaContent);
+
+  // Creer l'élément media-info dans le media-item après la video ou l'image
+  const mediaInfo = document.createElement("div");
+  mediaInfo.classList.add("media-info");
+  mediaElement.appendChild(mediaInfo);
+
   const mediaTitle = document.createElement("p");
   mediaTitle.textContent = mediaItem.title;
 
+  // Créer la section des likes avec l'icône de cœur
   const mediaLikes = document.createElement("p");
-  mediaLikes.textContent = `${mediaItem.likes} Likes`;
 
-  mediaElement.appendChild(mediaContent);
-  mediaElement.appendChild(mediaTitle);
-  mediaElement.appendChild(mediaLikes);
+  // Ajouter le nombre de likes
+  const likesCount = document.createElement("span");
+  likesCount.textContent = mediaItem.likes;
+
+  // Créer l'icône de cœur
+  const heartIcon = document.createElement("i");
+  heartIcon.classList.add("fa-solid", "fa-heart");
+
+  // Ajouter le nombre de likes et l'icône de cœur dans la section des likes
+  mediaLikes.appendChild(likesCount);
+  mediaLikes.appendChild(heartIcon);
+
+  mediaInfo.appendChild(mediaTitle);
+  mediaInfo.appendChild(mediaLikes);
 
   return mediaElement;
 }
 
 function displayPhotographerMedia(media) {
   // Créer une section pour les œuvres du photographe
-  const mediaSection = document.createElement("section");
-  mediaSection.classList.add("photographer-media");
+  const mediaSection = document.querySelector(".photographer-works");
 
   // Pour chaque œuvre, utiliser la factory pour créer et ajouter les éléments
   media.forEach((item) => {

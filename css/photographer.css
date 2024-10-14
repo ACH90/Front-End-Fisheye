@@ -103,9 +103,33 @@ form input {
     object-fit:cover;
 }
 
-.photographer-media img {
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
-    object-fit:cover;
+.photographer-works {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
+
+.photographer-works img, video {
+    
+    height: 300px;
+    width: 350px;
+    object-fit:cover;
+    border-radius: 5px;
+}
+
+.media-item {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+    height: 350px;
+}
+
+.media-info {
+    display: flex;
+    flex-direction: row;
+}
+
