@@ -89,6 +89,11 @@ function mediaFactory(mediaItem) {
   const mediaElement = document.createElement("div");
   mediaElement.classList.add("media-item");
 
+  // Creer l'element media-piece dans le media-item
+  const mediaPiece = document.createElement("div");
+  mediaPiece.classList.add("media-piece");
+  mediaElement.appendChild(mediaPiece);
+
   let mediaContent;
 
   // Utiliser la fonction getMediaType pour vérifier le type
@@ -108,7 +113,7 @@ function mediaFactory(mediaItem) {
   }
 
   // Ajouter le mediaContent à la mediaElement
-  mediaElement.appendChild(mediaContent);
+  mediaPiece.appendChild(mediaContent);
 
   // Creer l'élément media-info dans le media-item après la video ou l'image
   const mediaInfo = document.createElement("div");
@@ -123,7 +128,7 @@ function mediaFactory(mediaItem) {
 
   // Ajouter le nombre de likes
   const likesCount = document.createElement("span");
-  likesCount.textContent = mediaItem.likes;
+  likesCount.textContent = mediaItem.likes + " ";
 
   // Créer l'icône de cœur
   const heartIcon = document.createElement("i");
