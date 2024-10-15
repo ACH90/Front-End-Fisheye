@@ -99,15 +99,24 @@ function mediaFactory(mediaItem) {
   // Utiliser la fonction getMediaType pour vérifier le type
   const mediaType = getMediaType(mediaItem);
 
+  // Utiliser un sous-dossier spécifique au photographe (par exemple, basé sur l'ID)
+  const mediaFolder = `${mediaItem.photographerId}`; // Le dossier de chaque photographe
+
   if (mediaType === "image") {
     mediaContent = document.createElement("img");
-    mediaContent.setAttribute("src", `assets/media/${mediaItem.image}`);
+    mediaContent.setAttribute(
+      "src",
+      `assets/media/${mediaFolder}/${mediaItem.image}`
+    );
     mediaContent.setAttribute("alt", mediaItem.title);
   } else if (mediaType === "video") {
     mediaContent = document.createElement("video");
     mediaContent.setAttribute("controls", true);
     const source = document.createElement("source");
-    source.setAttribute("src", `assets/media/${mediaItem.video}`);
+    source.setAttribute(
+      "src",
+      `assets/media/${mediaFolder}/${mediaItem.video}`
+    );
     source.setAttribute("type", "video/mp4");
     mediaContent.appendChild(source);
   }
