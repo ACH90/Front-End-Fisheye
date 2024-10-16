@@ -38,6 +38,19 @@ function displayPhotographerData(photographer, media) {
   photographerInfo.classList.add("photographer-info");
   photographerHeader.appendChild(photographerInfo);
 
+  //Selection de l'element header
+  const header = document.querySelector(".modal header");
+
+  //Creation div photographer-name dans la div modal juste après le header
+  const photographerNameDiv = document.createElement("div");
+  photographerNameDiv.classList.add("photographer-name");
+
+  // Insérer la nouvelle div après le header
+  header.insertAdjacentElement("afterend", photographerNameDiv);
+
+  // Ajouter du contenu à la div
+  photographerNameDiv.innerHTML = `<h2>${photographer.name}</h2>`;
+
   // Trouver le bouton "Contactez-moi" dans le HTML
   const contactButton = photographerHeader.querySelector(".contact_button");
 
