@@ -102,32 +102,34 @@ form input {
     /* height: 300px; */
 }
 
-.photographer-info p {
+.photograph-header .photographer-info p {
     text-align: start;
+    font-weight: 400;
 }
 
 .photographer-info h1 { 
+    color: #D3573C;
     font-size: 64px;
     margin-right: auto;
 }
 
-.photographer-location {
+.photograph-header .photographer-location {
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-.photographer-tagline {
+.photograph-header .photographer-tagline {
+    color: #525252;
     font-size: 18px;
     margin-bottom: 10px;
 }
 
-.photographer-price {
+.photograph-header .photographer-price {
     color: black;
     font-size: 24px;
     font-weight: bold;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
     z-index: 1;
     position: fixed;
     bottom: 0;
@@ -166,7 +168,7 @@ form input {
 }
 
 .media-item {
-    /* margin: 20px; */
+    margin: 10px 0px;
     width: 350px;
     height: 351px;
 }
