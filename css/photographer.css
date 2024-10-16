@@ -1,11 +1,22 @@
 #contact_modal {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    z-index: 10; /* S'assurer que la modale est au-dessus du reste */
+    background-color: #DB8876;
+    border-radius: 5px;
+    padding: 35px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+    padding: 0 50px;
 }
 
 .contact_button {
@@ -91,9 +102,38 @@ form input {
     /* height: 300px; */
 }
 
+.photographer-info p {
+    text-align: start;
+}
+
 .photographer-info h1 { 
-    font-size: 36px;
+    font-size: 64px;
     margin-right: auto;
+}
+
+.photographer-location {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.photographer-tagline {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.photographer-price {
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    right: 0 ;
+    margin-right: 100px;
+    background-color: #DB8876;
 }
 
 .photograph-header img {
@@ -107,7 +147,8 @@ form input {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin: 0 100px;
 }
 
 .media-piece {
@@ -125,7 +166,7 @@ form input {
 }
 
 .media-item {
-    margin: 20px;
+    /* margin: 20px; */
     width: 350px;
     height: 351px;
 }
