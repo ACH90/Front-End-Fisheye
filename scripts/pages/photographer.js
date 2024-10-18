@@ -1,3 +1,5 @@
+let mediaArray = []; // Déclare mediaArray globalement
+
 async function getPhotographerById(id) {
   // Charger les données depuis le fichier JSON
   try {
@@ -167,12 +169,21 @@ function mediaFactory(mediaItem) {
 }
 
 function displayPhotographerMedia(media) {
+  // Initialiser mediaArray avec les œuvres du photographe
+  mediaArray = media;
+
   // Créer une section pour les œuvres du photographe
   const mediaSection = document.querySelector(".photographer-works");
 
   // Pour chaque œuvre, utiliser la factory pour créer et ajouter les éléments
-  media.forEach((item) => {
+  media.forEach((item, index) => {
     const mediaElement = mediaFactory(item);
+
+    // Ajouter un événement de clic pour ouvrir la modale avec le carrousel
+    mediaElement.addEventListener("click", () => {
+      openModal(index, media); // Ouvrir la modale et passer l'index du média cliqué
+    });
+
     mediaSection.appendChild(mediaElement);
   });
 
@@ -218,4 +229,66 @@ function getFormValues() {
   const message = document.getElementById("message").value;
 
   return { firstName, lastName, email, message };
+}
+
+//-------------------------------------------------------------
+
+function openModal(index, mediaArray) {
+  // Sélectionner l'élément de la modale et l'afficher
+  const modal = document.querySelector(".modal-carousel");
+  modal.style.display = "block";
+
+  // Afficher le média correspondant à l'index
+  showSlide(index, mediaArray);
+}
+
+function showSlide(index, mediaArray) {
+  const modalContent = document.querySelector(".modal-content");
+  modalContent.innerHTML = ""; // Vider le contenu précédent
+
+  const mediaItem = mediaArray[index];
+
+  const mediaType = getMediaType(mediaItem);
+  const mediaFolder = `${mediaItem.photographerId}`;
+
+  let mediaContent;
+  if (mediaType === "image") {
+    mediaContent = document.createElement("img");
+    mediaContent.setAttribute(
+      "src",
+      `assets/media/${mediaFolder}/${mediaItem.image}`
+    );
+    mediaContent.setAttribute("alt", mediaItem.title);
+  } else if (mediaType === "video") {
+    mediaContent = document.createElement("video");
+    mediaContent.setAttribute("controls", true);
+    const source = document.createElement("source");
+    source.setAttribute(
+      "src",
+      `assets/media/${mediaFolder}/${mediaItem.video}`
+    );
+    source.setAttribute("type", "video/mp4");
+    mediaContent.appendChild(source);
+  }
+
+  modalContent.appendChild(mediaContent);
+}
+
+let currentSlideIndex = 0;
+
+function changeSlide(n) {
+  currentSlideIndex += n;
+
+  // Vérifie si l'index est en dehors des limites
+  if (currentSlideIndex < 0) {
+    currentSlideIndex = mediaArray.length - 1; // Va à la dernière image
+  } else if (currentSlideIndex >= mediaArray.length) {
+    currentSlideIndex = 0; // Revient à la première image
+  }
+
+  showSlide(currentSlideIndex, mediaArray); // Affiche le slide courant
+}
+
+function closeModalCarousel() {
+  document.querySelector(".modal-carousel").style.display = "none";
 }
