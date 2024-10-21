@@ -236,7 +236,7 @@ function getFormValues() {
 function openModal(index, mediaArray) {
   // Sélectionner l'élément de la modale et l'afficher
   const modal = document.querySelector(".modal-carousel");
-  modal.style.display = "block";
+  modal.style.display = "flex";
 
   // Afficher le média correspondant à l'index
   showSlide(index, mediaArray);
