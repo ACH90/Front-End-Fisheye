@@ -156,7 +156,31 @@ function mediaFactory(mediaItem) {
 
   // Créer l'icône de cœur
   const heartIcon = document.createElement("i");
-  heartIcon.classList.add("fa-solid", "fa-heart");
+  heartIcon.classList.add("fa-regular", "fa-heart");
+
+  // Ajouter un gestionnaire d'événements pour liker
+  heartIcon.addEventListener("click", function (event) {
+    // Empêcher la propagation du clic à l'élément parent (qui ouvre la lightbox)
+    event.stopPropagation();
+
+    if (heartIcon.classList.contains("fa-regular")) {
+      // Passer de fa-regular à fa-solid
+      heartIcon.classList.remove("fa-regular");
+      heartIcon.classList.add("fa-solid");
+
+      // Incrémenter le compteur de likes
+      mediaItem.likes += 1;
+      likesCount.textContent = mediaItem.likes + " ";
+    } else {
+      // Passer de fa-solid à fa-regular (annuler le like)
+      heartIcon.classList.remove("fa-solid");
+      heartIcon.classList.add("fa-regular");
+
+      // Décrémenter le compteur de likes
+      mediaItem.likes -= 1;
+      likesCount.textContent = mediaItem.likes + " ";
+    }
+  });
 
   // Ajouter le nombre de likes et l'icône de cœur dans la section des likes
   mediaLikes.appendChild(likesCount);
