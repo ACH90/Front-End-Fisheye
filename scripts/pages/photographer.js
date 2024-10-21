@@ -180,7 +180,10 @@ function displayPhotographerMedia(media) {
     const mediaElement = mediaFactory(item);
 
     // Ajouter un événement de clic pour ouvrir la modale avec le carrousel
-    mediaElement.addEventListener("click", () => {
+    mediaElement.addEventListener("click", (event) => {
+      // Empêcher l'action par défaut (lecture de la vidéo)
+      event.preventDefault();
+
       openModal(index, media); // Ouvrir la modale et passer l'index du média cliqué
     });
 
@@ -247,7 +250,6 @@ function showSlide(index, mediaArray) {
   modalContent.innerHTML = ""; // Vider le contenu précédent
 
   const mediaItem = mediaArray[index];
-
   const mediaType = getMediaType(mediaItem);
   const mediaFolder = `${mediaItem.photographerId}`;
 
@@ -269,6 +271,9 @@ function showSlide(index, mediaArray) {
     );
     source.setAttribute("type", "video/mp4");
     mediaContent.appendChild(source);
+
+    // Démarrer la vidéo automatiquement dans la modale
+    mediaContent.play();
   }
 
   modalContent.appendChild(mediaContent);
@@ -290,5 +295,17 @@ function changeSlide(n) {
 }
 
 function closeModalCarousel() {
-  document.querySelector(".modal-carousel").style.display = "none";
+  const modal = document.querySelector(".modal-carousel");
+
+  // Trouver la vidéo dans la modale
+  const video = modal.querySelector("video");
+
+  // Si une vidéo est présente, la mettre en pause et réinitialiser son temps de lecture
+  if (video) {
+    video.pause(); // Met en pause la vidéo
+    video.currentTime = 0; // Remet la vidéo à 0
+  }
+
+  // Fermer la modale
+  modal.style.display = "none";
 }

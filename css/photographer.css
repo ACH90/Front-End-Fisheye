@@ -247,6 +247,9 @@ form input {
     max-height: 100%;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    object-fit: contain; /* Ajuste la vidéo sans la déformer */
+    width: auto;  /* Permet de s'ajuster à la taille de la modale */
+    height: auto;
   }
   
   /* Bouton pour fermer la modale */
