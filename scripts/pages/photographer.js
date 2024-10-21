@@ -237,6 +237,9 @@ function getFormValues() {
 //-------------------------------------------------------------
 
 function openModal(index, mediaArray) {
+  // Initialiser currentSlideIndex avec l'index du média cliqué
+  currentSlideIndex = index;
+
   // Sélectionner l'élément de la modale et l'afficher
   const modal = document.querySelector(".modal-carousel");
   modal.style.display = "flex";
@@ -308,4 +311,6 @@ function closeModalCarousel() {
 
   // Fermer la modale
   modal.style.display = "none";
+
+  currentSlideIndex = 0;
 }
