@@ -261,8 +261,8 @@ form input {
 }
 
 .border {
-  border-radius: 0px;
-  border-bottom: 1px solid #FAFAFA;
+  border-top: 1px solid #FAFAFA;
+
 }
 
 /* Affiche le menu lorsque aria-expanded est true */
@@ -282,7 +282,7 @@ form input {
 }
 
 .dropdown-item:hover {
-  background-color: #994646;
+  background-color: #ad6868;
 }
 
 /* Option sélectionnée */
