@@ -44,7 +44,7 @@ async function getMediaByPhotographerId(id) {
   }
 }
 
-function displayPhotographerData(photographer, media) {
+function displayPhotographerData(photographer) {
   if (!photographer) return;
 
   // Création du header
@@ -104,7 +104,7 @@ function displayPhotographerData(photographer, media) {
   photographerHeader.appendChild(img);
 }
 
-// Creer une fonction pour extraire le type de media
+// Extraire le type de media (image ou video)
 function getMediaType(mediaItem) {
   if (mediaItem.image && mediaItem.image.endsWith(".jpg")) {
     return "image";
@@ -114,23 +114,11 @@ function getMediaType(mediaItem) {
   return null;
 }
 
-function mediaFactory(mediaItem) {
-  // Creer l'element media-item
-  const mediaElement = document.createElement("div");
-  mediaElement.classList.add("media-item");
-
-  // Creer l'element media-piece dans le media-item
-  const mediaPiece = document.createElement("div");
-  mediaPiece.classList.add("media-piece");
-  mediaElement.appendChild(mediaPiece);
-
-  let mediaContent;
-
-  // Utiliser la fonction getMediaType pour vérifier le type
+// Fonction pour créer l'élément image ou vidéo
+function createMediaContent(mediaItem) {
   const mediaType = getMediaType(mediaItem);
-
-  // Utiliser un sous-dossier spécifique au photographe (par exemple, basé sur l'ID)
-  const mediaFolder = `${mediaItem.photographerId}`; // Le dossier de chaque photographe
+  const mediaFolder = `${mediaItem.photographerId}`; // Dossier du photographe
+  let mediaContent;
 
   if (mediaType === "image") {
     mediaContent = document.createElement("img");
@@ -151,18 +139,11 @@ function mediaFactory(mediaItem) {
     mediaContent.appendChild(source);
   }
 
-  // Ajouter le mediaContent à la mediaElement
-  mediaPiece.appendChild(mediaContent);
+  return mediaContent;
+}
 
-  // Creer l'élément media-info dans le media-item après la video ou l'image
-  const mediaInfo = document.createElement("div");
-  mediaInfo.classList.add("media-info");
-  mediaElement.appendChild(mediaInfo);
-
-  const mediaTitle = document.createElement("p");
-  mediaTitle.textContent = mediaItem.title;
-
-  // Créer la section des likes avec l'icône de cœur
+// Fonction pour créer la section des likes
+function createLikesSection(mediaItem) {
   const mediaLikes = document.createElement("p");
 
   // Ajouter le nombre de likes
@@ -175,8 +156,7 @@ function mediaFactory(mediaItem) {
 
   // Ajouter un gestionnaire d'événements pour liker
   heartIcon.addEventListener("click", function (event) {
-    // Empêcher la propagation du clic à l'élément parent (qui ouvre la lightbox)
-    event.stopPropagation();
+    event.stopPropagation(); // Empêcher la propagation du clic à l'élément parent
 
     if (heartIcon.classList.contains("fa-regular")) {
       // Passer de fa-regular à fa-solid
@@ -197,11 +177,39 @@ function mediaFactory(mediaItem) {
     }
   });
 
-  // Ajouter le nombre de likes et l'icône de cœur dans la section des likes
   mediaLikes.appendChild(likesCount);
   mediaLikes.appendChild(heartIcon);
 
+  return mediaLikes;
+}
+
+// Fonction principale pour créer un media item
+function mediaFactory(mediaItem) {
+  // Créer l'élément media-item
+  const mediaElement = document.createElement("div");
+  mediaElement.classList.add("media-item");
+
+  // Créer l'élément media-piece dans le media-item
+  const mediaPiece = document.createElement("div");
+  mediaPiece.classList.add("media-piece");
+  mediaElement.appendChild(mediaPiece);
+
+  // Ajouter le contenu média (image ou vidéo)
+  const mediaContent = createMediaContent(mediaItem);
+  mediaPiece.appendChild(mediaContent);
+
+  // Créer l'élément media-info
+  const mediaInfo = document.createElement("div");
+  mediaInfo.classList.add("media-info");
+  mediaElement.appendChild(mediaInfo);
+
+  // Ajouter le titre du média
+  const mediaTitle = document.createElement("p");
+  mediaTitle.textContent = mediaItem.title;
   mediaInfo.appendChild(mediaTitle);
+
+  // Ajouter la section des likes
+  const mediaLikes = createLikesSection(mediaItem);
   mediaInfo.appendChild(mediaLikes);
 
   return mediaElement;
