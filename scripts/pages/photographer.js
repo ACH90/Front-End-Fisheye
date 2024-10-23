@@ -1,14 +1,23 @@
 let mediaArray = []; // Déclare mediaArray globalement
 
-async function getPhotographerById(id) {
-  // Charger les données depuis le fichier JSON
+// Charger le fichier JSON (fetch)
+async function loadJsonData() {
   try {
     const response = await fetch("../data/photographers.json");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    // Trouver le photographe correspondant à l'ID
+    return data;
+  } catch (error) {
+    console.error("Error loading JSON data:", error);
+  }
+}
+
+//Trouver le photographe par son ID
+async function getPhotographerById(id) {
+  try {
+    const data = await loadJsonData();
     const photographer = data.photographers.find((photog) => photog.id == id);
     if (!photographer) {
       throw new Error("Photographer not found");
@@ -19,14 +28,20 @@ async function getPhotographerById(id) {
   }
 }
 
-async function getMediaByPhotographerId(id) {
-  // Charger les données depuis le fichier JSON
-  const response = await fetch("../data/photographers.json");
-  const data = await response.json();
+// Fonction pour filtrer les médias par ID de photographe
+function filterMediaByPhotographerId(mediaArray, photographerId) {
+  return mediaArray.filter((item) => item.photographerId == photographerId);
+}
 
-  // Trouver les œuvres correspondant au photographe
-  const media = data.media.filter((item) => item.photographerId == id);
-  return media;
+// Charger les medias du photographe par l'ID
+async function getMediaByPhotographerId(id) {
+  try {
+    const data = await loadJsonData();
+    const media = filterMediaByPhotographerId(data.media, id);
+    return media;
+  } catch (error) {
+    console.error("Error fetching media data:", error);
+  }
 }
 
 function displayPhotographerData(photographer, media) {
@@ -231,178 +246,3 @@ Promise.all([
   displayPhotographerData(photographer); // Affiche les infos du photographe
   displayPhotographerMedia(media); // Affiche les œuvres du photographe
 });
-
-//Recupération des données du formulaire de contact (Modale)
-
-// Ajouter un écouteur d'événements pour l'envoi du formulaire
-document
-  .getElementById("contactForm")
-  .addEventListener("submit", function (event) {
-    // Empêche la soumission du formulaire et le rechargement de la page
-    event.preventDefault();
-
-    // Appel de la fonction pour obtenir les valeurs du formulaire
-    const formValues = getFormValues();
-
-    // Vous pouvez traiter ces données ou les envoyer à un serveur ici
-    console.log("Formulaire soumis avec succès :", formValues);
-  });
-
-// Fonction pour récupérer les valeurs du formulaire
-function getFormValues() {
-  const firstName = document.getElementById("first_name").value;
-  const lastName = document.getElementById("last_name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
-
-  return { firstName, lastName, email, message };
-}
-
-//------------------------------------------------------------- Lightbox
-
-function openModal(index, mediaArray) {
-  // Initialiser currentSlideIndex avec l'index du média cliqué
-  currentSlideIndex = index;
-
-  // Sélectionner l'élément de la modale et l'afficher
-  const modal = document.querySelector(".modal-carousel");
-  modal.style.display = "flex";
-
-  // Afficher le média correspondant à l'index
-  showSlide(index, mediaArray);
-}
-
-function showSlide(index, mediaArray) {
-  const modalContent = document.querySelector(".modal-content");
-  modalContent.innerHTML = ""; // Vider le contenu précédent
-
-  const mediaItem = mediaArray[index];
-  const mediaType = getMediaType(mediaItem);
-  const mediaFolder = `${mediaItem.photographerId}`;
-
-  let mediaContent;
-  if (mediaType === "image") {
-    mediaContent = document.createElement("img");
-    mediaContent.setAttribute(
-      "src",
-      `assets/media/${mediaFolder}/${mediaItem.image}`
-    );
-    mediaContent.setAttribute("alt", mediaItem.title);
-  } else if (mediaType === "video") {
-    mediaContent = document.createElement("video");
-    mediaContent.setAttribute("controls", true);
-    const source = document.createElement("source");
-    source.setAttribute(
-      "src",
-      `assets/media/${mediaFolder}/${mediaItem.video}`
-    );
-    source.setAttribute("type", "video/mp4");
-    mediaContent.appendChild(source);
-
-    // Démarrer la vidéo automatiquement dans la modale
-    mediaContent.play();
-  }
-
-  modalContent.appendChild(mediaContent);
-}
-
-let currentSlideIndex = 0;
-
-function changeSlide(n) {
-  currentSlideIndex += n;
-
-  // Vérifie si l'index est en dehors des limites
-  if (currentSlideIndex < 0) {
-    currentSlideIndex = mediaArray.length - 1; // Va à la dernière image
-  } else if (currentSlideIndex >= mediaArray.length) {
-    currentSlideIndex = 0; // Revient à la première image
-  }
-
-  showSlide(currentSlideIndex, mediaArray); // Affiche le slide courant
-}
-
-function closeModalCarousel() {
-  const modal = document.querySelector(".modal-carousel");
-
-  // Trouver la vidéo dans la modale
-  const video = modal.querySelector("video");
-
-  // Si une vidéo est présente, la mettre en pause et réinitialiser son temps de lecture
-  if (video) {
-    video.pause(); // Met en pause la vidéo
-    video.currentTime = 0; // Remet la vidéo à 0
-  }
-
-  // Fermer la modale
-  modal.style.display = "none";
-
-  currentSlideIndex = 0;
-}
-
-//------------------------------------------------------------- Filtre Dropdown
-
-const dropdownToggle = document.querySelector(".dropdown-toggle");
-const dropdownMenu = document.querySelector(".dropdown-menu");
-const dropdownItems = document.querySelectorAll(".dropdown-item");
-
-// Fonction pour vider la section des œuvres du photographe
-function clearMediaSection() {
-  const mediaSection = document.querySelector(".photographer-works");
-  mediaSection.innerHTML = ""; // Vide le contenu précédent
-}
-
-// Fonction pour ouvrir/fermer le dropdown
-dropdownToggle.addEventListener("click", () => {
-  const expanded =
-    dropdownToggle.getAttribute("aria-expanded") === "true" || false;
-  dropdownToggle.setAttribute("aria-expanded", !expanded);
-});
-
-// Fonction pour trier le tableau mediaArray
-function sortMediaArray(sortBy) {
-  if (sortBy === "popularity") {
-    mediaArray.sort((a, b) => b.likes - a.likes); // Trier par popularité (likes)
-  } else if (sortBy === "date") {
-    // Supposons que vous ayez une propriété 'date' dans vos objets mediaItem
-    mediaArray.sort((a, b) => new Date(b.date) - new Date(a.date)); // Trier par date
-  } else if (sortBy === "title") {
-    mediaArray.sort((a, b) => a.title.localeCompare(b.title)); // Trier par titre
-  }
-
-  displayPhotographerMedia(mediaArray); // Met à jour l'affichage après le tri
-}
-
-// Fonction pour gérer la sélection d'un élément
-dropdownItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    // Mettre à jour le texte du bouton avec l'option sélectionnée
-    dropdownToggle.innerHTML =
-      item.textContent + ' <span class="arrow">&#9660;</span>';
-
-    // Fermer le menu
-    dropdownToggle.setAttribute("aria-expanded", false);
-
-    // Ajouter une classe active à l'élément sélectionné
-    dropdownItems.forEach((i) => i.classList.remove("active"));
-    item.classList.add("active");
-
-    // Trier les médias en fonction de l'option sélectionnée
-    const sortByValue = item.getAttribute("data-value");
-
-    clearMediaSection();
-    sortMediaArray(sortByValue); // Appeler la fonction de tri
-  });
-});
-
-// Fermer le dropdown si on clique en dehors
-function closeDropdown(event) {
-  if (
-    !dropdownToggle.contains(event.target) &&
-    !dropdownMenu.contains(event.target)
-  ) {
-    dropdownToggle.setAttribute("aria-expanded", false);
-  }
-}
-
-// Fermer le dropdown si on clique en dehors
-document.addEventListener("click", closeDropdown);
