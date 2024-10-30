@@ -3,7 +3,7 @@ let mediaArray = []; // Déclare mediaArray globalement
 // Charger le fichier JSON (fetch)
 async function loadJsonData() {
   try {
-    const response = await fetch("./data/photographers.json");
+    const response = await fetch("data/photographers.json");
     if (!response.ok) throw new Error("Network response was not ok");
     const data = await response.json();
     return data;
