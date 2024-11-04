@@ -23,21 +23,41 @@
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
       </div>
 <!-- Filtre dropdown -->
-      <div class="dropdown-container">
-        <p>Trier par</p>
-      <div class="dropdown">
-        
-        <button class="dropdown-toggle" aria-haspopup="listbox" aria-expanded="false" id="dropdownMenu">
-          Popularité
-          <span class="arrow">&#9660;</span>
-        </button>
-        <ul class="dropdown-menu" role="listbox" aria-labelledby="dropdownMenu">
-          <li role="option" class="dropdown-item" data-value="popularity">Popularité</li>
-          <li role="option" class="dropdown-item border" data-value="date">Date</li>
-          <li role="option" class="dropdown-item border" data-value="title">Titre</li>
-        </ul>
-      </div>
-    </div>
+<div class="dropdown-container">
+  <p>Trier par</p>
+  <div class="dropdown">
+    <button 
+      class="dropdown-toggle" 
+      aria-haspopup="listbox" 
+      aria-expanded="false" 
+      id="dropdownMenu"
+      aria-activedescendant="active-option">
+      Popularité
+      <span class="arrow">&#9660;</span>
+    </button>
+    <ul class="dropdown-menu" role="listbox" aria-labelledby="dropdownMenu">
+      <li 
+        id="option-popularity" 
+        role="option" 
+        class="dropdown-item" 
+        data-value="popularity" 
+        aria-selected="true">Popularité</li>
+      <li 
+        id="option-date" 
+        role="option" 
+        class="dropdown-item border" 
+        data-value="date" 
+        aria-selected="false">Date</li>
+      <li 
+        id="option-title" 
+        role="option" 
+        class="dropdown-item border" 
+        data-value="title" 
+        aria-selected="false">Titre</li>
+    </ul>
+  </div>
+</div>
+
       
       
       <section class="photographer-works">
@@ -45,19 +65,25 @@
       </section>
     </main>
     <!-- Modale lightbox -->
-    <div class="modal-carousel" style="display:none;">
-      <span class="close" onclick="closeModalCarousel()">&times;</span>
+    <div class="modal-carousel" style="display:none;" aria-label="image closeup view">
+      <span class="close" onclick="closeModalCarousel()" alt ="close modal">&times;</span>
       <div class="modal-content"></div>
-      <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-      <a class="next" onclick="changeSlide(1)">&#10095;</a>
+      <a class="prev" onclick="changeSlide(-1)" alt ="previous slide">&#10094;</a>
+      <a class="next" onclick="changeSlide(1)" alt ="next slide">&#10095;</a>
     </div>
     
     <!-- Modale contact -->
     <div id="contact_modal">
 			<div class="modal">
 				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <div class="contact_me">
+            <h2 id="contact_title" aria-labelledby="photographer_name">Contactez-moi</h2>
+            <h2 id="photographer_name" class="modal-photographer-name"></h2>
+          </div> 
+          <div>
+            <img src="assets/icons/close.svg" onclick="closeModal()" alt="close modal"/>
+          </div>    
+          
         </header>
 				<form id="contactForm">
 					<div>
@@ -70,15 +96,15 @@
             <label for="message">Votre message</label>
 						<input type="text" name="message" id="message">
 					</div>
-          <button class="contact_button">Envoyer</button>
+          <button class="contact_button" aria-label="Send">Envoyer</button>
 				</form>
 			</div>
 		</div>
+    <script src="./scripts/Factory/mediaFactory.js" defer></script>
     <script src="./scripts/templates/photographer.js" defer></script>
     <script src="./scripts/pages/photographer.js" defer></script>
     <script src="./scripts/utils/contactForm.js" defer></script>
     <script src="./scripts/utils/lightbox.js" defer></script>
     <script src="./scripts/utils/filter.js" defer></script>
-    <script src="./scripts/Factory/mediaFactory.js" defer></script>
   </body>
 </html>

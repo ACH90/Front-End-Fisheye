@@ -1,5 +1,7 @@
-function displayModal() {
+function displayModal(photographerName) {
   const modal = document.getElementById("contact_modal");
+  const modalTitle = modal.querySelector("#photographer_name");
+  modalTitle.textContent = photographerName;
   modal.style.display = "block";
 }
 

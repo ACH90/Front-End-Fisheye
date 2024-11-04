@@ -131,6 +131,12 @@ function displayPhotographerData(photographer) {
   img.setAttribute("alt", photographer.name);
 
   photographerHeader.appendChild(img);
+
+  // Assure que le bouton ouvre la modale avec le nom du photographe
+  const contactButton = photographerHeader.querySelector(".contact_button");
+  contactButton.addEventListener("click", () =>
+    displayModal(photographer.name)
+  );
 }
 
 // Afficher les médias du photographe
