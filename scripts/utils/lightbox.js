@@ -14,6 +14,9 @@ function openModal(index, mediaArray) {
 
   // Afficher le média correspondant à l'index
   showSlide(currentSlideIndex);
+
+  // Ajouter un écouteur d'événements pour gérer les touches du clavier
+  document.addEventListener("keydown", handleKeyDown);
 }
 
 function showSlide(index) {
@@ -46,6 +49,23 @@ function changeSlide(n) {
   showSlide(currentSlideIndex); // Affiche le slide courant
 }
 
+function handleKeyDown(event) {
+  // Vérifier si la modale est ouverte
+  const modal = document.querySelector(".modal-carousel");
+  if (modal.style.display === "flex") {
+    if (event.key === "ArrowLeft") {
+      // Flèche gauche pour changer vers la gauche
+      changeSlide(-1);
+    } else if (event.key === "ArrowRight") {
+      // Flèche droite pour changer vers la droite
+      changeSlide(1);
+    } else if (event.key === "Escape") {
+      // Touche Échap pour fermer la modale
+      closeModalCarousel();
+    }
+  }
+}
+
 function closeModalCarousel() {
   const modal = document.querySelector(".modal-carousel");
 
@@ -60,6 +80,9 @@ function closeModalCarousel() {
 
   // Fermer la modale
   modal.style.display = "none";
+
+  // Retirer l'écouteur d'événements pour éviter les fuites de mémoire
+  document.removeEventListener("keydown", handleKeyDown);
 
   currentSlideIndex = 0;
 }
