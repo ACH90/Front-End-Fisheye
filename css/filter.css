@@ -1,0 +1,88 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 100px;
+}
+
+.dropdown-container p {
+    margin-right: 25px;
+    font-weight: bold;
+}
+/* Wrapper dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+
+}
+
+/* Bouton pour ouvrir/fermer le menu */
+.dropdown-toggle {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #901C1C;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-toggle .arrow {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+/* Menu des options, masqué par défaut */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+}
+
+.border {
+  border-top: 1px solid #FAFAFA;
+
+}
+
+/* Affiche le menu lorsque aria-expanded est true */
+[aria-expanded="true"] + .dropdown-menu {
+  display: block;
+}
+
+/* Style des éléments du menu */
+.dropdown-item {
+  background-color: #901C1C;
+  padding: 10px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: #FAFAFA;
+}
+
+.dropdown-item:hover {
+  background-color: #ad6868;
+}
+
+/* Option sélectionnée */
+.dropdown-item.active {
+  background-color: #901C1C;
+}
+
+
+/* --------------------------- */ 
