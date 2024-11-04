@@ -3,7 +3,23 @@
 let currentSlideIndex = 0;
 let modalMediaArray = []; // Tableau global pour stocker les médias
 
-function openModal(index, mediaArray) {
+// Ouvrir la modale en appuyant sur une touche spécifique
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    const modal = document.querySelector(".modal-carousel");
+
+    // Ouvrir la modale avec le premier média si elle est actuellement fermée
+    if (modal.style.display !== "flex") {
+      openModal(0, modalMediaArray); // Affiche le premier média
+    }
+  }
+});
+
+function openModal(index = 0, mediaArray) {
+  if (mediaArray.length === 0) {
+    console.warn("Aucun média disponible pour afficher dans la modale.");
+    return;
+  }
   // Initialiser currentSlideIndex avec l'index du média cliqué
   currentSlideIndex = index;
   modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale

@@ -141,7 +141,8 @@ function displayPhotographerData(photographer) {
 
 // Afficher les médias du photographe
 function displayPhotographerMedia(media) {
-  mediaArray = media;
+  mediaArray = media; // Stocker le tableau des médias globalement
+  modalMediaArray = media; // Initialiser modalMediaArray dès le chargement
   const mediaSection = document.querySelector(".photographer-works");
 
   media.forEach((item, index) => {
