@@ -36,7 +36,9 @@
     margin-bottom: 10px;
 }
 
-.photograph-header .photographer-price {
+.photograph-header .likes-and-price {
+    display: flex;
+    flex-direction: row;
     color: black;
     font-size: 24px;
     font-weight: bold;
@@ -48,6 +50,11 @@
     right: 0 ;
     margin-right: 100px;
     background-color: #DB8876;
+}
+.photograph-header .likes-and-price p {
+    margin: 10px;
+    font-size: large;
+    color: black;
 }
 
 .photograph-header img {

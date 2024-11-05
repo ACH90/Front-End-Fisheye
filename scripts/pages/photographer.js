@@ -1,4 +1,5 @@
 let mediaArray = []; // Déclare mediaArray globalement
+let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
 // Charger le fichier JSON (fetch)
 async function loadJsonData() {
@@ -73,6 +74,10 @@ function createLikesSection(mediaItem) {
       mediaItem.likes -= 1;
     }
     likesCount.textContent = mediaItem.likes + " ";
+
+    // Mettre à jour le total des likes dans l'élément correspondant
+    let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+    totalLikesElement.textContent = `${totalLikes} `;
   });
 
   mediaLikes.appendChild(likesCount);
@@ -116,11 +121,28 @@ function displayPhotographerData(photographer) {
   tagline.textContent = photographer.tagline;
   tagline.classList.add("photographer-tagline");
 
+  const likesAndPrice = document.createElement("div");
+  likesAndPrice.classList.add("likes-and-price");
+
+  // Calcul du total des likes
+  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+  totalLikesElement = document.createElement("p");
+  totalLikesElement.textContent = `${totalLikes} `;
+  totalLikesElement.classList.add("photographer-likes");
+
+  const heartIcon = document.createElement("i");
+  heartIcon.classList.add("fa-regular", "fa-heart");
+  totalLikesElement.appendChild(heartIcon);
+
+  likesAndPrice.appendChild(totalLikesElement);
+
   const price = document.createElement("p");
   price.textContent = `${photographer.price}€/jour`;
   price.classList.add("photographer-price");
 
-  photographerInfo.append(h1, location, tagline, price);
+  likesAndPrice.appendChild(price);
+
+  photographerInfo.append(h1, location, tagline, likesAndPrice);
   photographerHeader.insertBefore(
     photographerInfo,
     photographerHeader.querySelector(".contact_button")
@@ -167,6 +189,9 @@ Promise.all([
   getPhotographerById(photographerId),
   getMediaByPhotographerId(photographerId),
 ]).then(([photographer, media]) => {
-  displayPhotographerData(photographer);
+  // Calculer la somme des likes pour tous les médias du photographe
+  const totalLikes = media.reduce((sum, item) => sum + item.likes, 0);
+
+  displayPhotographerData(photographer, totalLikes);
   displayPhotographerMedia(media);
 });
