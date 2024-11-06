@@ -1,0 +1,11 @@
+.focusable-link:focus {
+  transform: scale(1.05); /* Légère mise à l'échelle pour le zoom */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Effet d'ombre */
+}
+
+  
+  /* .hidden-focus:focus {
+    outline: none;
+  } */

@@ -1,6 +1,13 @@
 let mediaArray = []; // Déclare mediaArray globalement
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
+// Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    returnToHomepage();
+  }
+});
+
 // Charger le fichier JSON (fetch)
 async function loadJsonData() {
   try {

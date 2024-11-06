@@ -16,6 +16,9 @@ async function displayData(photographers) {
     const userCardDOM = photographerModel.getUserCardDOM();
     photographersSection.appendChild(userCardDOM);
   });
+
+  // Initialiser la navigation clavier après l'ajout des photographes
+  initKeyboardNavigation();
 }
 
 async function init() {
