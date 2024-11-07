@@ -52,3 +52,5 @@ function returnToHomepage() {
     console.log("Retour vers la page d’accueil");
   }
 }
+
+//
