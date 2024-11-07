@@ -12,7 +12,7 @@ function openModal(index = 0, mediaArray) {
   currentSlideIndex = index;
   modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
 
-  // Sélectionner l'élément de la modale et l'afficher
+  // Sélectionner l'élément de la modale et l'afficherrr
   const modal = document.querySelector(".modal-carousel");
   modal.style.display = "flex";
 
