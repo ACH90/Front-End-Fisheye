@@ -47,7 +47,7 @@ function returnToHomepage() {
     console.log("Fermer dabord la modale");
   } else {
     setTimeout(() => {
-      window.location.href = "../index.html"; // Redirection vers index.html
+      window.location.href = "./index.html"; // Redirection vers index.html
     }, 300);
     console.log("Retour vers la page d’accueil");
   }
