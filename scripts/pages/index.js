@@ -1,16 +1,14 @@
-async function getPhotographers() {
-  // Ceci est un exemple de données pour avoir un affichage de photographes de test dès le démarrage du projet,
-  // requête sur le fichier JSON en utilisant "fetch".
-
-  const response = await fetch("./data/photographers.json");
-
-  // et bien retourner le tableau photographers seulement une fois récupéré
-  return await response.json();
-}
+import { initKeyboardNavigation } from "../utils/keyboardNav.js";
+import { getPhotographers } from "../dataLoader/dataLoader.js";
 
 async function displayData(photographers) {
   const photographersSection = document.querySelector(".photographer_section");
 
+  // Vérification si des photographes existent
+  if (photographers.length === 0) {
+    console.error("Aucun photographe trouvé pour le moment ");
+    return;
+  }
   photographers.forEach((photographer) => {
     const photographerModel = photographerTemplate(photographer);
     const userCardDOM = photographerModel.getUserCardDOM();
@@ -22,8 +20,8 @@ async function displayData(photographers) {
 }
 
 async function init() {
-  // Récupère les datas des photographes
-  const { photographers } = await getPhotographers();
+  // Récupère les datas des photographes via getPhotographers() importé de dataLoader.js
+  const photographers = await getPhotographers();
   displayData(photographers);
 }
 

@@ -35,7 +35,7 @@ class VideoMedia {
 }
 
 // Factory pour créer le bon type de média
-class MediaFactory {
+export default class MediaFactory {
   static createMedia(mediaItem) {
     const mediaType = MediaFactory.getMediaType(mediaItem);
     if (mediaType === "image") {
@@ -53,6 +53,7 @@ class MediaFactory {
     } else if (mediaItem.video && mediaItem.video.endsWith(".mp4")) {
       return "video";
     }
+    console.error("Type de média non valide : ", mediaItem); // Ajoute un message d'erreur
     return null;
   }
 }

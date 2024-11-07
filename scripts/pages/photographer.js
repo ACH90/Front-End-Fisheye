@@ -1,61 +1,32 @@
-let mediaArray = []; // Déclare mediaArray globalement
+import {
+  getPhotographerById,
+  setMediaArray,
+} from "../dataLoader/dataLoader.js";
+
+import { openModal, closeModalCarousel } from "../utils/lightbox.js";
+
+import MediaFactory from "../factory/mediaFactory.js";
+
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
-// Fonction pour assigner les médias à mediaArray
-function setMediaArray(media) {
-  mediaArray = media; // Remplir mediaArray avec les médias récupérés
-  console.log("mediaArray:", mediaArray); // Vérification du contenu
-  updateTotalLikes(); // Appeler updateTotalLikes après avoir assigné mediaArray
+// Fonction pour mettre à jour le total des likes
+function updateTotalLikes(mediaArray) {
+  if (!totalLikesElement) return; // Vérification si totalLikesElement est défini
+
+  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+  totalLikesElement.textContent = `${totalLikes} `;
+  console.log("Total des likes:", totalLikes);
 }
 
-// Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    returnToHomepage();
-  }
-});
-
-// Charger le fichier JSON (fetch)
-async function loadJsonData() {
-  try {
-    const response = await fetch("./data/photographers.json");
-    if (!response.ok) throw new Error("Network response was not ok");
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error loading JSON data:", error);
-  }
-}
-
-// Trouver le photographe par son ID
-async function getPhotographerById(id) {
-  try {
-    const data = await loadJsonData();
-    const photographer = data.photographers.find((photog) => photog.id == id);
-    if (!photographer) throw new Error("Photographer not found");
-    return photographer;
-  } catch (error) {
-    console.error("Error fetching photographer data:", error);
-  }
-}
-
-// Charger les medias du photographe par l'ID
-async function getMediaByPhotographerId(id) {
-  try {
-    const data = await loadJsonData();
-    return data.media.filter((item) => item.photographerId == id);
-  } catch (error) {
-    console.error("Error fetching media data:", error);
-  }
-}
-
-// Fonction principale pour créer un media item
+// Fonction pour créer un media item
 function createMediaItem(mediaItem) {
   const mediaElement = document.createElement("div");
   mediaElement.classList.add("media-item");
 
   const mediaPiece = document.createElement("div");
   mediaPiece.classList.add("media-piece");
+
+  console.log(mediaItem); // Vérifie si mediaItem contient toutes les propriétés nécessaires
 
   const media = MediaFactory.createMedia(mediaItem);
   mediaPiece.appendChild(media.createElement());
@@ -67,7 +38,7 @@ function createMediaItem(mediaItem) {
 }
 
 // Fonction pour créer la section des likes
-function createLikesSection(mediaItem) {
+function createLikesSection(mediaItem, mediaArray) {
   const mediaLikes = document.createElement("p");
   const likesCount = document.createElement("span");
   likesCount.textContent = mediaItem.likes + " ";
@@ -90,7 +61,7 @@ function createLikesSection(mediaItem) {
     likesCount.textContent = mediaItem.likes + " ";
 
     // Mettre à jour le total des likes dans l'élément correspondant
-    updateTotalLikes();
+    updateTotalLikes(mediaArray);
   });
 
   mediaLikes.appendChild(likesCount);
@@ -99,16 +70,8 @@ function createLikesSection(mediaItem) {
   return mediaLikes;
 }
 
-// Fonction pour mettre à jour le total des likes
-
-function updateTotalLikes() {
-  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
-  totalLikesElement.textContent = `${totalLikes} `;
-  console.log("Total des likes:", totalLikes);
-}
-
 // Fonction pour créer les informations du media (titre et likes)
-function createMediaInfo(mediaItem) {
+function createMediaInfo(mediaItem, mediaArray) {
   const mediaInfo = document.createElement("div");
   mediaInfo.classList.add("media-info");
 
@@ -116,7 +79,7 @@ function createMediaInfo(mediaItem) {
   mediaTitle.textContent = mediaItem.title;
   mediaInfo.appendChild(mediaTitle);
 
-  const mediaLikes = createLikesSection(mediaItem);
+  const mediaLikes = createLikesSection(mediaItem, mediaArray);
   mediaInfo.appendChild(mediaLikes);
 
   return mediaInfo;
@@ -153,8 +116,6 @@ function displayPhotographerData(photographer) {
   heartIcon.classList.add("fa-solid", "fa-heart");
 
   // Mettre à jour le total des likes après le calcul
-  updateTotalLikes();
-
   likesAndPrice.appendChild(totalLikesElement);
   likesAndPrice.appendChild(heartIcon);
 
@@ -178,28 +139,27 @@ function displayPhotographerData(photographer) {
 
   // Assure que le bouton ouvre la modale avec le nom du photographe
   const contactButton = photographerHeader.querySelector(".contact_button");
-  contactButton.addEventListener("click", () =>
-    displayModal(photographer.name)
-  );
+  contactButton.addEventListener("click", () => openModal(photographer.name));
 }
 
 // Afficher les médias du photographe
-function displayPhotographerMedia(media) {
-  setMediaArray(media); // Appel de la fonction qui remplit mediaArray
+async function displayPhotographerMedia(photographerId) {
+  const media = await setMediaArray(photographerId); // Appel de la fonction qui remplit mediaArray et met à jour les likes
   const mediaSection = document.querySelector(".photographer-works");
-  console.log(mediaArray); // Vérifier que mediaArray contient les éléments
 
-  media.forEach((item, index) => {
-    const mediaElement = createMediaItem(item);
+  media.forEach((item) => {
+    const mediaElement = createMediaItem(item, media);
     mediaElement.addEventListener("click", (event) => {
       event.preventDefault();
-      openModal(index, media);
+      openModal(item.id, media);
     });
     mediaSection.appendChild(mediaElement);
   });
 
   const main = document.querySelector("#main");
   main.appendChild(mediaSection);
+
+  updateTotalLikes(media); // Met à jour le total des likes après avoir affiché les médias
 }
 
 // Extraire l'ID du photographe depuis l'URL
@@ -209,11 +169,7 @@ const photographerId = params.get("id");
 // Charger et afficher les données du photographe et ses œuvres
 Promise.all([
   getPhotographerById(photographerId),
-  getMediaByPhotographerId(photographerId),
-]).then(([photographer, media]) => {
-  // Calculer la somme des likes pour tous les médias du photographe
-  const totalLikes = media.reduce((sum, item) => sum + item.likes, 0);
-
-  displayPhotographerData(photographer, totalLikes);
-  displayPhotographerMedia(media);
+  displayPhotographerMedia(photographerId),
+]).then(([photographer]) => {
+  displayPhotographerData(photographer);
 });
