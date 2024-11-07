@@ -1,6 +1,13 @@
 let mediaArray = []; // Déclare mediaArray globalement
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
+// Fonction pour assigner les médias à mediaArray
+function setMediaArray(media) {
+  mediaArray = media; // Remplir mediaArray avec les médias récupérés
+  console.log("mediaArray:", mediaArray); // Vérification du contenu
+  updateTotalLikes(); // Appeler updateTotalLikes après avoir assigné mediaArray
+}
+
 // Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
@@ -83,14 +90,21 @@ function createLikesSection(mediaItem) {
     likesCount.textContent = mediaItem.likes + " ";
 
     // Mettre à jour le total des likes dans l'élément correspondant
-    let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
-    totalLikesElement.textContent = `${totalLikes} `;
+    updateTotalLikes();
   });
 
   mediaLikes.appendChild(likesCount);
   mediaLikes.appendChild(heartIcon);
 
   return mediaLikes;
+}
+
+// Fonction pour mettre à jour le total des likes
+
+function updateTotalLikes() {
+  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+  totalLikesElement.textContent = `${totalLikes} `;
+  console.log("Total des likes:", totalLikes);
 }
 
 // Fonction pour créer les informations du media (titre et likes)
@@ -131,17 +145,18 @@ function displayPhotographerData(photographer) {
   const likesAndPrice = document.createElement("div");
   likesAndPrice.classList.add("likes-and-price");
 
-  // Calcul du total des likes
-  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+  // Initialisation du total des likes
   totalLikesElement = document.createElement("p");
-  totalLikesElement.textContent = `${totalLikes} `;
   totalLikesElement.classList.add("photographer-likes");
 
   const heartIcon = document.createElement("i");
-  heartIcon.classList.add("fa-regular", "fa-heart");
-  totalLikesElement.appendChild(heartIcon);
+  heartIcon.classList.add("fa-solid", "fa-heart");
+
+  // Mettre à jour le total des likes après le calcul
+  updateTotalLikes();
 
   likesAndPrice.appendChild(totalLikesElement);
+  likesAndPrice.appendChild(heartIcon);
 
   const price = document.createElement("p");
   price.textContent = `${photographer.price}€/jour`;
@@ -170,9 +185,9 @@ function displayPhotographerData(photographer) {
 
 // Afficher les médias du photographe
 function displayPhotographerMedia(media) {
-  mediaArray = media; // Stocker le tableau des médias globalement
-  modalMediaArray = media; // Initialiser modalMediaArray dès le chargement
+  setMediaArray(media); // Appel de la fonction qui remplit mediaArray
   const mediaSection = document.querySelector(".photographer-works");
+  console.log(mediaArray); // Vérifier que mediaArray contient les éléments
 
   media.forEach((item, index) => {
     const mediaElement = createMediaItem(item);
