@@ -3,20 +3,8 @@
 let currentSlideIndex = 0;
 let modalMediaArray = []; // Tableau global pour stocker les médias
 
-// Ouvrir la modale en appuyant sur une touche spécifique
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    const modal = document.querySelector(".modal-carousel");
-
-    // Ouvrir la modale avec le premier média si elle est actuellement fermée
-    if (modal.style.display !== "flex") {
-      openModal(0, modalMediaArray); // Affiche le premier média
-    }
-  }
-});
-
 function openModal(index = 0, mediaArray) {
-  if (mediaArray.length === 0) {
+  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
     console.warn("Aucun média disponible pour afficher dans la modale.");
     return;
   }
@@ -34,6 +22,19 @@ function openModal(index = 0, mediaArray) {
   // Ajouter un écouteur d'événements pour gérer les touches du clavier
   document.addEventListener("keydown", handleKeyDown);
 }
+
+// Ouvrir la modale en appuyant sur une touche spécifique
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    const modal = document.querySelector(".modal-carousel");
+
+    modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
+    // Ouvrir la modale avec le premier média si elle est actuellement fermée
+    if (modal.style.display !== "flex") {
+      openModal(0, modalMediaArray); // Affiche le premier média
+    }
+  }
+});
 
 function showSlide(index) {
   const modalContent = document.querySelector(".modal-content");
