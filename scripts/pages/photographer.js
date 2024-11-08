@@ -1,6 +1,8 @@
 let mediaArray = []; // Déclare mediaArray globalement
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
+// import MediaFactory from "../Factory/mediaFactory.js";
+
 // Fonction pour assigner les médias à mediaArray
 function setMediaArray(media) {
   mediaArray = media; // Remplir mediaArray avec les médias récupérés
