@@ -1,3 +1,6 @@
+import { mediaArray } from "./photographer.js";
+import { displayPhotographerMedia } from "./photographer.js";
+
 //------------------------------------------------------------- Filtre Dropdown
 
 const dropdownToggle = document.querySelector(".dropdown-toggle");

@@ -1,3 +1,8 @@
+import { MediaFactory } from "../Factory/mediaFactory.js";
+import { returnToHomepage } from "../utils/returnToHomepage.js";
+import displayModal from "../utils/contactForm.js";
+import openModal from "../utils/lightbox.js";
+
 let mediaArray = []; // Déclare mediaArray globalement
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
@@ -186,7 +191,7 @@ function displayPhotographerData(photographer) {
 }
 
 // Afficher les médias du photographe
-function displayPhotographerMedia(media) {
+export function displayPhotographerMedia(media) {
   setMediaArray(media); // Appel de la fonction qui remplit mediaArray
   const mediaSection = document.querySelector(".photographer-works");
   console.log(mediaArray); // Vérifier que mediaArray contient les éléments

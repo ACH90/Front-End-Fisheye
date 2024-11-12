@@ -1,4 +1,4 @@
-function initKeyboardNavigation() {
+export function initKeyboardNavigation() {
   const photographersLinks = document.querySelectorAll(".focusable-link");
   let currentIndex = 0;
 
@@ -41,7 +41,7 @@ function initKeyboardNavigation() {
 }
 
 // Fonction de retour vers la page d'accueil
-function returnToHomepage() {
+export function returnToHomepage() {
   const modal = document.querySelector(".modal-carousel");
   if (modal.style.display === "flex") {
     console.log("Fermer dabord la modale");
