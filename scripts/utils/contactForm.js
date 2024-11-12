@@ -1,14 +1,32 @@
+// eslint-disable-next-line no-unused-vars
 function displayModal(photographerName) {
   const modal = document.getElementById("contact_modal");
   const modalTitle = modal.querySelector("#photographer_name");
   modalTitle.textContent = photographerName;
   modal.style.display = "block";
+  modal.focus();
 }
 
 function closeModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "none";
 }
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    closeModal(); // Fermer la modale si la touche Enter est appuyée lorsque le focus est sur la croix de la modale
+  }
+});
+
+// Écouter l'événement keydown
+document.addEventListener("keydown", function (event) {
+  const modal = document.getElementById("contact_modal");
+
+  // Vérifier si la touche pressée est "Escape" et si la modale est ouverte
+  if (event.key === "Escape" && modal.style.display === "flex") {
+    closeModal();
+  }
+});
 
 //Recupération des données du formulaire de contact (Modale)
 
