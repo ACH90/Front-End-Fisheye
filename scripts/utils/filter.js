@@ -19,13 +19,17 @@ dropdownToggle.addEventListener("click", () => {
 // Fonction pour trier le tableau mediaArray
 function sortMediaArray(sortBy) {
   if (sortBy === "popularity") {
+    // eslint-disable-next-line no-undef
     mediaArray.sort((a, b) => b.likes - a.likes);
   } else if (sortBy === "date") {
+    // eslint-disable-next-line no-undef
     mediaArray.sort((a, b) => new Date(b.date) - new Date(a.date));
   } else if (sortBy === "title") {
+    // eslint-disable-next-line no-undef
     mediaArray.sort((a, b) => a.title.localeCompare(b.title));
   }
 
+  // eslint-disable-next-line no-undef
   displayPhotographerMedia(mediaArray);
 }
 

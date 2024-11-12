@@ -35,6 +35,7 @@ class VideoMedia {
 }
 
 // Factory pour créer le bon type de média
+// eslint-disable-next-line no-unused-vars
 class MediaFactory {
   static createMedia(mediaItem) {
     const mediaType = MediaFactory.getMediaType(mediaItem);

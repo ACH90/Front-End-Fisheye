@@ -13,6 +13,7 @@ function setMediaArray(media) {
 // Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
+    // eslint-disable-next-line no-undef
     returnToHomepage();
   }
 });
@@ -55,10 +56,12 @@ async function getMediaByPhotographerId(id) {
 function createMediaItem(mediaItem) {
   const mediaElement = document.createElement("div");
   mediaElement.classList.add("media-item");
+  mediaElement.setAttribute("tabindex", "0"); // Rendre l'élément focusable
 
   const mediaPiece = document.createElement("div");
   mediaPiece.classList.add("media-piece");
 
+  // eslint-disable-next-line no-undef
   const media = MediaFactory.createMedia(mediaItem);
   mediaPiece.appendChild(media.createElement());
 
@@ -77,9 +80,26 @@ function createLikesSection(mediaItem) {
   const heartIcon = document.createElement("i");
   heartIcon.classList.add("fa-regular", "fa-heart");
 
+  // Rendre le cœur focusable
+  heartIcon.setAttribute("tabindex", "0");
+
   heartIcon.addEventListener("click", function (event) {
     event.stopPropagation();
 
+    toggleHeart(); // Appeler une fonction pour gérer l'activation/désactivation du cœur
+  });
+
+  // Ajouter un gestionnaire d'événement pour la touche "Entrée"
+  heartIcon.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      // Vérifier si la touche appuyée est "Enter"
+      event.preventDefault(); // Empêcher l'action par défaut (éviter tout comportement involontaire)
+      toggleHeart(); // Appeler la fonction pour gérer l'activation/désactivation du cœur
+    }
+  });
+
+  // Fonction pour basculer entre l'état "fa-regular" et "fa-solid" du cœur
+  function toggleHeart() {
     if (heartIcon.classList.contains("fa-regular")) {
       heartIcon.classList.remove("fa-regular");
       heartIcon.classList.add("fa-solid");
@@ -89,11 +109,12 @@ function createLikesSection(mediaItem) {
       heartIcon.classList.add("fa-regular");
       mediaItem.likes -= 1;
     }
+
     likesCount.textContent = mediaItem.likes + " ";
 
     // Mettre à jour le total des likes dans l'élément correspondant
     updateTotalLikes();
-  });
+  }
 
   mediaLikes.appendChild(likesCount);
   mediaLikes.appendChild(heartIcon);
@@ -181,6 +202,7 @@ function displayPhotographerData(photographer) {
   // Assure que le bouton ouvre la modale avec le nom du photographe
   const contactButton = photographerHeader.querySelector(".contact_button");
   contactButton.addEventListener("click", () =>
+    // eslint-disable-next-line no-undef
     displayModal(photographer.name)
   );
 }
@@ -195,6 +217,7 @@ function displayPhotographerMedia(media) {
     const mediaElement = createMediaItem(item);
     mediaElement.addEventListener("click", (event) => {
       event.preventDefault();
+      // eslint-disable-next-line no-undef
       openModal(index, media);
     });
     mediaSection.appendChild(mediaElement);

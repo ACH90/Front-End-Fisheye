@@ -3,14 +3,17 @@
 let currentSlideIndex = 0;
 let modalMediaArray = []; // Tableau global pour stocker les médias
 
+// eslint-disable-next-line no-unused-vars
 function openModal(index = 0, mediaArray) {
+  currentSlideIndex = index;
+  modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
+
+  // Vérifier que le tableau contient des données
   if (mediaArray.length === 0) {
     console.warn("Aucun média disponible pour afficher dans la modale.");
     return;
   }
   // Initialiser currentSlideIndex avec l'index du média cliqué
-  currentSlideIndex = index;
-  modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
 
   // Sélectionner l'élément de la modale et l'afficherrr
   const modal = document.querySelector(".modal-carousel");
@@ -23,19 +26,6 @@ function openModal(index = 0, mediaArray) {
   document.addEventListener("keydown", handleKeyDown);
 }
 
-// Ouvrir la modale en appuyant sur une touche spécifique
-document.addEventListener("keydown", function (event) {
-  modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
-  if (event.key === "Enter") {
-    const modal = document.querySelector(".modal-carousel");
-
-    // Ouvrir la modale avec le premier média si elle est actuellement fermée
-    if (modal.style.display !== "flex") {
-      openModal(0, modalMediaArray); // Affiche le premier média
-    }
-  }
-});
-
 function showSlide(index) {
   const modalContent = document.querySelector(".modal-content");
   modalContent.innerHTML = ""; // Vider le contenu précédent
@@ -43,6 +33,7 @@ function showSlide(index) {
   const mediaItem = modalMediaArray[index]; // Utiliser modalMediaArray ici
 
   // Créer le média avec la MediaFactory
+  // eslint-disable-next-line no-undef
   const mediaElement = MediaFactory.createMedia(mediaItem).createElement();
 
   // Si le média est une vidéo, la démarrer automatiquement
@@ -52,7 +43,26 @@ function showSlide(index) {
 
   modalContent.appendChild(mediaElement);
 }
+// Ecouteur d'événements pour "Enter"
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    // Récupérer l'élément actuellement focusé
+    const focusedElement = document.querySelector(".media-item:focus"); // Assurez-vous que .media-item est bien la classe de votre média
 
+    if (focusedElement) {
+      // Trouver l'index du média dans le tableau
+      const index = [...focusedElement.parentElement.children].indexOf(
+        focusedElement
+      );
+
+      // Assurez-vous que mediaArray contient les médias
+      // eslint-disable-next-line no-undef
+      modalMediaArray = mediaArray; // Charger les données de mediaArray
+
+      openModal(index, modalMediaArray); // Ouvrir la modale avec l'index du média
+    }
+  }
+});
 function changeSlide(n) {
   currentSlideIndex += n;
 
@@ -64,23 +74,6 @@ function changeSlide(n) {
   }
 
   showSlide(currentSlideIndex); // Affiche le slide courant
-}
-
-function handleKeyDown(event) {
-  // Vérifier si la modale est ouverte
-  const modal = document.querySelector(".modal-carousel");
-  if (modal.style.display === "flex") {
-    if (event.key === "ArrowLeft") {
-      // Flèche gauche pour changer vers la gauche
-      changeSlide(-1);
-    } else if (event.key === "ArrowRight") {
-      // Flèche droite pour changer vers la droite
-      changeSlide(1);
-    } else if (event.key === "Escape") {
-      // Touche Échap pour fermer la modale
-      closeModalCarousel();
-    }
-  }
 }
 
 function closeModalCarousel() {
@@ -102,4 +95,21 @@ function closeModalCarousel() {
   document.removeEventListener("keydown", handleKeyDown);
 
   currentSlideIndex = 0;
+}
+
+function handleKeyDown(event) {
+  // Vérifier si la modale est ouverte
+  const modal = document.querySelector(".modal-carousel");
+  if (modal.style.display === "flex") {
+    if (event.key === "ArrowLeft") {
+      // Flèche gauche pour changer vers la gauche
+      changeSlide(-1);
+    } else if (event.key === "ArrowRight") {
+      // Flèche droite pour changer vers la droite
+      changeSlide(1);
+    } else if (event.key === "Escape") {
+      // Touche Échap pour fermer la modale
+      closeModalCarousel();
+    }
+  }
 }
