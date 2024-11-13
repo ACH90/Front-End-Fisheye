@@ -11,7 +11,7 @@ function clearMediaSection() {
 }
 
 // Fonction pour ouvrir/fermer le dropdown
-dropdownToggle.addEventListener("click", () => {
+function openDropdown() {
   const expanded = dropdownToggle.getAttribute("aria-expanded") === "true";
   dropdownToggle.setAttribute("aria-expanded", !expanded);
 
@@ -19,7 +19,10 @@ dropdownToggle.addEventListener("click", () => {
   dropdownItems.forEach((item) => {
     item.setAttribute("tabindex", expanded ? "-1" : "0"); // -1 pour les masquer, 0 pour les rendre tabulables
   });
-});
+}
+
+// Ajout de l'écouteur d'événement pour le clic
+dropdownToggle.addEventListener("click", openDropdown);
 
 // Fonction pour trier le tableau mediaArray
 function sortMediaArray(sortBy) {
@@ -85,3 +88,10 @@ function closeDropdown(event) {
 
 // Fermer le dropdown si on clique en dehors
 document.addEventListener("click", closeDropdown);
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    dropdownToggle.setAttribute("aria-expanded", false);
+    closeDropdown(event);
+  }
+});

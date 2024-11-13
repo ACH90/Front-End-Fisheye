@@ -9,6 +9,9 @@ function returnToHomepage() {
     modal && window.getComputedStyle(modal).display === "flex";
   const isModalFormVisible =
     modalForm && window.getComputedStyle(modalForm).display === "block";
+  const isFilterVisible =
+    // eslint-disable-next-line no-undef
+    dropdownToggle.getAttribute("aria-expanded") === "true";
 
   if (isModalVisible) {
     console.log("Fermer d'abord la modale");
@@ -18,6 +21,8 @@ function returnToHomepage() {
     console.log("Fermer d'abord le formulaire de contact");
     modalForm.style.display = "none"; // Fermer le formulaire de contact
     modalForm.setAttribute("aria-hidden", "true");
+  } else if (isFilterVisible) {
+    console.log("Fermez le filtre avant de retourner à la page d'accueil");
   } else {
     setTimeout(() => {
       window.location.href = "./index.html"; // Redirection vers index.html
