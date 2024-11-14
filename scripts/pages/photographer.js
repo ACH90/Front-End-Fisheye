@@ -83,6 +83,9 @@ function createLikesSection(mediaItem) {
   // Rendre le cœur focusable
   heartIcon.setAttribute("tabindex", "0");
 
+  // Ajouter un aria-label initial
+  heartIcon.setAttribute("aria-label", "Likes");
+
   heartIcon.addEventListener("click", function (event) {
     event.stopPropagation();
 
@@ -174,6 +177,7 @@ function displayPhotographerData(photographer) {
 
   const heartIcon = document.createElement("i");
   heartIcon.classList.add("fa-solid", "fa-heart");
+  heartIcon.setAttribute("aria-label", "Likes");
 
   // Mettre à jour le total des likes après le calcul
   updateTotalLikes();

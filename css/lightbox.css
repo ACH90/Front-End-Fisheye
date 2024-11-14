@@ -81,23 +81,7 @@
     right: 10px;
     border-radius: 3px 0 0 3px;
   }
-  
-  /* Effet hover pour les boutons de navigation */
-  .prev:hover,
-  .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  
-  /* Style pour les icônes de navigation dans le carrousel */
-  .prev::before,
-  .next::before {
-    content: '\2039'; /* Flèche gauche pour "prev" */
-    font-size: 30px;
-  }
-  
-  .next::before {
-    content: '\203A'; /* Flèche droite pour "next" */
-  }
+
   
   /* Style pour l'animation de transition des slides */
   .fade {
