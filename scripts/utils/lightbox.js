@@ -137,16 +137,49 @@ function closeModalCarousel() {
 function handleKeyDown(event) {
   // Vérifier si la modale est ouverte
   const modal = document.querySelector(".modal-carousel");
+
   if (modal.style.display === "flex") {
+    // Navigation avec les flèches
     if (event.key === "ArrowLeft") {
       // Flèche gauche pour changer vers la gauche
       changeSlide(-1);
     } else if (event.key === "ArrowRight") {
       // Flèche droite pour changer vers la droite
       changeSlide(1);
-    } else if (event.key === "Escape") {
-      // Touche Échap pour fermer la modale
+    }
+    // Fermer la modale avec la touche Échap
+    else if (event.key === "Escape") {
       closeModalCarousel();
+    }
+    // Gérer "Enter" pour ouvrir la modale ou interagir avec les éléments de la modale
+    else if (event.key === "Enter") {
+      // Récupérer l'élément actuellement focusé
+      const focusedElement = document.activeElement;
+
+      // Si l'élément focusé est un média, ouvrir la modale
+      if (focusedElement.classList.contains("media-item")) {
+        // Trouver l'index du média dans le tableau
+        const index = [...focusedElement.parentElement.children].indexOf(
+          focusedElement
+        );
+        // Ouvrir la modale avec l'index du média
+        openModal(index, modalMediaArray);
+      }
+      // Si l'élément focusé est une flèche gauche
+      else if (focusedElement.classList.contains("prev")) {
+        // Flèche gauche : change de slide vers la gauche
+        changeSlide(-1);
+      }
+      // Si l'élément focusé est une flèche droite
+      else if (focusedElement.classList.contains("next")) {
+        // Flèche droite : change de slide vers la droite
+        changeSlide(1);
+      }
+      // Si l'élément focusé est le bouton de fermeture
+      else if (focusedElement.classList.contains("close")) {
+        // Croissance : ferme la modale
+        closeModalCarousel();
+      }
     }
   }
 }
