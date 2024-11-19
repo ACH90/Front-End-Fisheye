@@ -1,14 +1,22 @@
 // eslint-disable-next-line no-unused-vars
 function displayModal(photographerName) {
   const modal = document.getElementById("contact_modal");
+  const main = document.getElementById("main");
   const modalTitle = modal.querySelector("#photographer_name");
   modalTitle.textContent = photographerName;
   modal.style.display = "block";
   modal.focus();
+
+  main.setAttribute("aria-hidden", "true");
+  main.setAttribute("tabindex", "-1");
 }
 
 function closeModal() {
   const modal = document.getElementById("contact_modal");
+  const main = document.getElementById("main");
+
+  main.setAttribute("aria-hidden", "false");
+  main.setAttribute("tabindex", "0");
   modal.style.display = "none";
 }
 

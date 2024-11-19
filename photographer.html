@@ -20,7 +20,7 @@
         <img src="assets/images/logo.png" class="logo" alt="fisheye logo"/>
       </a>
     </header>
-    <main id="main">
+    <main id="main" aria-hidden="false">
       <!-- Entête photographe -->
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
@@ -68,7 +68,7 @@
       </section>
     </main>
     <!-- Modale lightbox -->
-    <div class="modal-carousel" style="display:none;" aria-label="image closeup view">
+    <div class="modal-carousel" style="display:none;" aria-hidden="true" role="image closeup view">
       <span class="close" onclick="closeModalCarousel()" aria-label="close modal" tabindex="0"><i class="fa-solid fa-x"></i></span>
       <div class="modal-content"></div>
       <a class="prev" onclick="changeSlide(-1)" aria-label ="previous slide" tabindex="0"><i class="fa-solid fa-chevron-left"></i></i></a>

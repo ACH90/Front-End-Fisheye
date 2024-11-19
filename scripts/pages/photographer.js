@@ -1,24 +1,7 @@
 let mediaArray = []; // Déclare mediaArray globalement
 let totalLikesElement; // Déclaration globale pour l'élément des likes totaux
 
-// import MediaFactory from "../Factory/mediaFactory.js";
-
-// Fonction pour assigner les médias à mediaArray
-function setMediaArray(media) {
-  mediaArray = media; // Remplir mediaArray avec les médias récupérés
-  console.log("mediaArray:", mediaArray); // Vérification du contenu
-  updateTotalLikes(); // Appeler updateTotalLikes après avoir assigné mediaArray
-}
-
-// Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    // eslint-disable-next-line no-undef
-    returnToHomepage();
-  }
-});
-
-// Charger le fichier JSON (fetch)
+// Fonction pour charger le fichier JSON (fetch)
 async function loadJsonData() {
   try {
     const response = await fetch("./data/photographers.json");
@@ -52,24 +35,25 @@ async function getMediaByPhotographerId(id) {
   }
 }
 
-// Fonction principale pour créer un media item
-function createMediaItem(mediaItem) {
-  const mediaElement = document.createElement("div");
-  mediaElement.classList.add("media-item");
-  mediaElement.setAttribute("tabindex", "0"); // Rendre l'élément focusable
-
-  const mediaPiece = document.createElement("div");
-  mediaPiece.classList.add("media-piece");
-
-  // eslint-disable-next-line no-undef
-  const media = MediaFactory.createMedia(mediaItem);
-  mediaPiece.appendChild(media.createElement());
-
-  mediaElement.appendChild(mediaPiece);
-  mediaElement.appendChild(createMediaInfo(mediaItem));
-
-  return mediaElement;
+// Fonction pour mettre à jour le total des likes
+function updateTotalLikes() {
+  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
+  totalLikesElement.textContent = `${totalLikes} `;
 }
+
+// Fonction pour assigner les médias à mediaArray
+function setMediaArray(media) {
+  mediaArray = media; // Remplir mediaArray avec les médias récupérés
+  updateTotalLikes(); // Appeler updateTotalLikes après avoir assigné mediaArray
+}
+
+// Assurer que la fonction returnToHomepage soit appelée lors de l'événement "Escape"
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    // eslint-disable-next-line no-undef
+    returnToHomepage();
+  }
+});
 
 // Fonction pour créer la section des likes
 function createLikesSection(mediaItem) {
@@ -125,14 +109,6 @@ function createLikesSection(mediaItem) {
   return mediaLikes;
 }
 
-// Fonction pour mettre à jour le total des likes
-
-function updateTotalLikes() {
-  let totalLikes = mediaArray.reduce((sum, media) => sum + media.likes, 0);
-  totalLikesElement.textContent = `${totalLikes} `;
-  console.log("Total des likes:", totalLikes);
-}
-
 // Fonction pour créer les informations du media (titre et likes)
 function createMediaInfo(mediaItem) {
   const mediaInfo = document.createElement("div");
@@ -148,7 +124,25 @@ function createMediaInfo(mediaItem) {
   return mediaInfo;
 }
 
-// Afficher les données du photographe
+// Fonction principale pour créer un media item
+function createMediaItem(mediaItem) {
+  const mediaElement = document.createElement("div");
+  mediaElement.classList.add("media-item");
+  mediaElement.setAttribute("tabindex", "0"); // Rendre l'élément focusable
+
+  const mediaPiece = document.createElement("div");
+  mediaPiece.classList.add("media-piece");
+
+  // eslint-disable-next-line no-undef
+  const media = MediaFactory.createMedia(mediaItem);
+  mediaPiece.appendChild(media.createElement());
+
+  mediaElement.appendChild(mediaPiece);
+  mediaElement.appendChild(createMediaInfo(mediaItem));
+
+  return mediaElement;
+}
+// --------------------------Afficher les données du photographe---------------------------------------
 function displayPhotographerData(photographer) {
   if (!photographer) return;
 
@@ -215,8 +209,6 @@ function displayPhotographerData(photographer) {
 function displayPhotographerMedia(media) {
   setMediaArray(media); // Appel de la fonction qui remplit mediaArray
   const mediaSection = document.querySelector(".photographer-works");
-  console.log(mediaArray); // Vérifier que mediaArray contient les éléments
-
   media.forEach((item, index) => {
     const mediaElement = createMediaItem(item);
     mediaElement.addEventListener("click", (event) => {

@@ -18,6 +18,11 @@ function openModal(index = 0, mediaArray) {
   // Sélectionner l'élément de la modale et l'afficherrr
   const modal = document.querySelector(".modal-carousel");
   modal.style.display = "flex";
+  modal.setAttribute("aria-hidden", "false"); // Rendre la modale accessible
+
+  const main = document.getElementById("main");
+  main.setAttribute("aria-hidden", "true");
+  main.setAttribute("tabindex", "-1");
 
   // Afficher le média correspondant à l'index
   showSlide(currentSlideIndex);
@@ -78,6 +83,7 @@ function changeSlide(n) {
 
 function closeModalCarousel() {
   const modal = document.querySelector(".modal-carousel");
+  const main = document.getElementById("main");
 
   // Trouver la vidéo dans la modale
   const video = modal.querySelector("video");
@@ -90,6 +96,10 @@ function closeModalCarousel() {
 
   // Fermer la modale
   modal.style.display = "none";
+  modal.setAttribute("aria-hidden", "true"); // Rendre la modale accessible
+
+  main.setAttribute("aria-hidden", "true");
+  main.setAttribute("tabindex", "-1");
 
   // Retirer l'écouteur d'événements pour éviter les fuites de mémoire
   document.removeEventListener("keydown", handleKeyDown);
