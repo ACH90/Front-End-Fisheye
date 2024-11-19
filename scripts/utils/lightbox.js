@@ -2,27 +2,62 @@
 
 let currentSlideIndex = 0;
 let modalMediaArray = []; // Tableau global pour stocker les médias
+let lastFocusedElement;
+
+function trapFocus(modal) {
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      if (event.shiftKey) {
+        // Navigation inverse
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Navigation normale
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+  });
+
+  // Donner le focus au premier élément dès l'ouverture
+  firstElement.focus();
+}
 
 // eslint-disable-next-line no-unused-vars
 function openModal(index = 0, mediaArray) {
   currentSlideIndex = index;
-  modalMediaArray = mediaArray; // Stocker le mediaArray dans une variable globale
+  modalMediaArray = mediaArray; // Stocker le tableau des médias
 
   // Vérifier que le tableau contient des données
   if (mediaArray.length === 0) {
     console.warn("Aucun média disponible pour afficher dans la modale.");
     return;
   }
-  // Initialiser currentSlideIndex avec l'index du média cliqué
 
-  // Sélectionner l'élément de la modale et l'afficherrr
+  // Sauvegarder l'élément actuellement en focus
+  lastFocusedElement = document.activeElement;
+
+  // Afficher la modale et configurer l'accessibilité
   const modal = document.querySelector(".modal-carousel");
   modal.style.display = "flex";
-  modal.setAttribute("aria-hidden", "false"); // Rendre la modale accessible
+  modal.setAttribute("aria-hidden", "false");
 
   const main = document.getElementById("main");
   main.setAttribute("aria-hidden", "true");
   main.setAttribute("tabindex", "-1");
+
+  // Assurer que le focus est piégé dans la modale
+  trapFocus(modal);
 
   // Afficher le média correspondant à l'index
   showSlide(currentSlideIndex);
@@ -83,28 +118,20 @@ function changeSlide(n) {
 
 function closeModalCarousel() {
   const modal = document.querySelector(".modal-carousel");
+  modal.style.display = "none";
+  modal.setAttribute("aria-hidden", "true");
+
   const main = document.getElementById("main");
+  main.setAttribute("aria-hidden", "false");
+  main.removeAttribute("tabindex");
 
-  // Trouver la vidéo dans la modale
-  const video = modal.querySelector("video");
-
-  // Si une vidéo est présente, la mettre en pause et réinitialiser son temps de lecture
-  if (video) {
-    video.pause(); // Met en pause la vidéo
-    video.currentTime = 0; // Remet la vidéo à 0
+  // Restaurer le focus à l'élément précédemment sélectionné
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
   }
 
-  // Fermer la modale
-  modal.style.display = "none";
-  modal.setAttribute("aria-hidden", "true"); // Rendre la modale accessible
-
-  main.setAttribute("aria-hidden", "true");
-  main.setAttribute("tabindex", "-1");
-
-  // Retirer l'écouteur d'événements pour éviter les fuites de mémoire
+  // Supprimer les écouteurs d'événements
   document.removeEventListener("keydown", handleKeyDown);
-
-  currentSlideIndex = 0;
 }
 
 function handleKeyDown(event) {

@@ -68,11 +68,19 @@
       </section>
     </main>
     <!-- Modale lightbox -->
-    <div class="modal-carousel" style="display:none;" aria-hidden="true" role="image closeup view">
-      <span class="close" onclick="closeModalCarousel()" aria-label="close modal" tabindex="0"><i class="fa-solid fa-x"></i></span>
+    <div class="modal-carousel" id="lightbox-modal" style="display:none;" aria-hidden="true" role="dialog" aria-labelledby="lightbox-title">
+      <h2 id="lightbox-title" class="visually-hidden">Galerie de médias</h2> 
+      <!-- Titre caché pour les lecteurs d'écran-->
+      <span class="close" onclick="closeModalCarousel()" aria-label="Fermer la modale" tabindex="0">
+        <i class="fa-solid fa-x"></i>
+      </span>
       <div class="modal-content"></div>
-      <a class="prev" onclick="changeSlide(-1)" aria-label ="previous slide" tabindex="0"><i class="fa-solid fa-chevron-left"></i></i></a>
-      <a class="next" onclick="changeSlide(1)" aria-label ="next slide" tabindex="0"><i class="fa-solid fa-chevron-right"></i></a>
+      <a class="prev" onclick="changeSlide(-1)" aria-label="Diapositive précédente" tabindex="0">
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+      <a class="next" onclick="changeSlide(1)" aria-label="Diapositive suivante" tabindex="0">
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
     </div>
     
     <!-- Modale contact -->
@@ -83,10 +91,7 @@
             <h2 id="contact_title" aria-labelledby="photographer_name">Contactez-moi</h2>
             <h2 id="photographer_name" class="modal-photographer-name"></h2>
           </div> 
-          <div  tabindex="0">
-            <img src="assets/icons/close.svg" onclick="closeModal()" alt="close modal"/>
-          </div>    
-          
+          <button class="close-modal" onclick="closeModal()" aria-label="Close modal">X</button>
         </header>
 				<form id="contactForm">
 					<div>

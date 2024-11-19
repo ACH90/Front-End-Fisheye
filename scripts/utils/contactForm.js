@@ -1,22 +1,52 @@
+function trapFocus(modal) {
+  const focusableElements = modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  modal.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      if (event.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+  });
+}
+
 // eslint-disable-next-line no-unused-vars
 function displayModal(photographerName) {
   const modal = document.getElementById("contact_modal");
   const main = document.getElementById("main");
-  const modalTitle = modal.querySelector("#photographer_name");
-  modalTitle.textContent = photographerName;
+  const close = modal.querySelector(".close-modal");
+
+  if (!close) {
+    console.error("L'élément .close n'a pas été trouvé !");
+    return;
+  }
+
   modal.style.display = "block";
-  modal.focus();
+  close.focus();
 
   main.setAttribute("aria-hidden", "true");
-  main.setAttribute("tabindex", "-1");
+  modal.setAttribute("aria-hidden", "false");
+
+  // Active le trapping du focus
+  trapFocus(modal);
 }
 
 function closeModal() {
   const modal = document.getElementById("contact_modal");
-  const main = document.getElementById("main");
-
-  main.setAttribute("aria-hidden", "false");
-  main.setAttribute("tabindex", "0");
   modal.style.display = "none";
 }
 

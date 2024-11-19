@@ -1,6 +1,6 @@
 #contact_modal {
     display: none;
-    z-index: 1000;               
+    /* z-index: 1000;                */
     /* position: fixed;
     top: 50%;
     left: 50%;
@@ -20,6 +20,20 @@
     margin: 0 100px;
     padding: 0 50px;
 }
+
+.close-modal {
+    background-color: transparent; /* Supprime le fond */
+    border: none; /* Supprime la bordure */
+    font-size: 32px;
+    font-weight: bold; /* Rend la croix plus visible */
+    color: #ffffff; /* Couleur de la croix */
+    cursor: pointer; /* Change le curseur au survol */
+    position: absolute; /* Place le bouton en haut à droite */
+    top: 10px;
+    right: 10px;
+    padding: 10px; /* Ajoute un peu d'espace autour */
+    transition: transform 0.2s, color 0.2s; /* Animation pour le hover */
+  }
 
 .contact_button {
     font-size: 20px;
