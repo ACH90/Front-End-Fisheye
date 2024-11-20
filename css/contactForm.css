@@ -48,6 +48,12 @@
     cursor: pointer;
 }
 
+.contact_button:hover,
+.contact_button:focus {
+  background-color: #DB8876; /* Couleur lorsque le bouton est hover ou focus */
+
+}
+
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
