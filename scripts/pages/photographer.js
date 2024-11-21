@@ -67,8 +67,10 @@ function createLikesSection(mediaItem) {
   // Rendre le cœur focusable
   heartIcon.setAttribute("tabindex", "0");
 
+  heartIcon.setAttribute("role", "img");
+
   // Ajouter un aria-label initial
-  heartIcon.setAttribute("aria-label", "Likes");
+  heartIcon.setAttribute("aria-label", "Ajouter aux favoris");
 
   heartIcon.addEventListener("click", function (event) {
     event.stopPropagation();
@@ -168,20 +170,25 @@ function displayPhotographerData(photographer) {
   // Initialisation du total des likes
   totalLikesElement = document.createElement("p");
   totalLikesElement.classList.add("photographer-likes");
+  totalLikesElement.setAttribute("tabindex", "0");
 
   const heartIcon = document.createElement("i");
   heartIcon.classList.add("fa-solid", "fa-heart");
+  heartIcon.setAttribute("tabindex", "0");
   heartIcon.setAttribute("aria-label", "Likes");
+  heartIcon.setAttribute("role", "img");
 
   // Mettre à jour le total des likes après le calcul
   updateTotalLikes();
 
   likesAndPrice.appendChild(totalLikesElement);
   likesAndPrice.appendChild(heartIcon);
+  likesAndPrice.setAttribute("tabindex", "0");
 
   const price = document.createElement("p");
   price.textContent = `${photographer.price}€/jour`;
   price.classList.add("photographer-price");
+  price.setAttribute("tabindex", "0");
 
   likesAndPrice.appendChild(price);
 
